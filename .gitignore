@@ -1,0 +1,7 @@
+# Exclude all test-files and test-folders
+**/*_test
+test_*.*
+
+# Exclude .terraform
+.terraform
+.terraform.lock.hcl
