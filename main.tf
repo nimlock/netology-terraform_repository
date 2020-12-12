@@ -54,20 +54,20 @@ locals {
   }
 }
 
-resource "aws_instance" "web" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = local.dict_of_instance_types[var.kvazi_workspace]
-  count = local.dict_of_instance_count[var.kvazi_workspace]
+# resource "aws_instance" "web" {
+#   ami           = data.aws_ami.ubuntu.id
+#   instance_type = local.dict_of_instance_types[var.kvazi_workspace]
+#   count = local.dict_of_instance_count[var.kvazi_workspace]
 
-  tags = {
-    Name = "My_first_instance"
-  }
+#   tags = {
+#     Name = "My_first_instance"
+#   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
+#   lifecycle {
+#     create_before_destroy = true
+#   }
 
-}
+# }
 
 data "aws_caller_identity" "current" {}
 
@@ -90,3 +90,22 @@ data "aws_region" "current" {}
 #   ami           = each.value
 #   instance_type = each.key
 # }
+
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnet_ids" "all" {
+  vpc_id = data.aws_vpc.default.id
+}
+
+module "ec2_module" {
+  source = "terraform-aws-modules/ec2-instance/aws"
+
+  instance_count = 1
+
+  name          = "done-with-ec2_module"
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = local.dict_of_instance_types[var.kvazi_workspace]
+  subnet_id     = tolist(data.aws_subnet_ids.all.ids)[0]
+}
