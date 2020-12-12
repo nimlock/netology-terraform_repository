@@ -77,16 +77,16 @@ data "aws_region" "current" {}
 #   instance_id = aws_instance.web.id
 # }
 
-locals {
-  instances = {
-    "t2.micro" = data.aws_ami.ubuntu.id
-    "t2.small" = data.aws_ami.ubuntu.id
-  }
-}
+# locals {
+#   instances = {
+#     "t2.micro" = data.aws_ami.ubuntu.id
+#     "t2.small" = data.aws_ami.ubuntu.id
+#   }
+# }
 
-resource "aws_instance" "api" {
-  for_each = local.instances
+# resource "aws_instance" "api" {
+#   for_each = local.instances
 
-  ami           = each.value
-  instance_type = each.key
-}
+#   ami           = each.value
+#   instance_type = each.key
+# }

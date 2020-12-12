@@ -21,3 +21,7 @@ output "region_name" {
 # output "name" {
 #   value = data.terraform_remote_state.cloudinfra
 # }
+
+output "current_environment" {
+  value = var.kvazi_workspace
+}
