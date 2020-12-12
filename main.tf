@@ -7,6 +7,10 @@ terraform {
   }
 }
 
+variable "kvazi_workspace" {
+  type = string
+}
+
 # data "terraform_remote_state" "cloudinfra" {
 #   backend = "s3"
 #   config = {
@@ -52,8 +56,8 @@ locals {
 
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = local.dict_of_instance_types[terraform.workspace]
-  count = local.dict_of_instance_count[terraform.workspace]
+  instance_type = local.dict_of_instance_types[var.kvazi_workspace]
+  count = local.dict_of_instance_count[var.kvazi_workspace]
 
   tags = {
     Name = "My_first_instance"
